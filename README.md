@@ -87,3 +87,61 @@ This setup allows you to control the robot in real-time using the keyboard, maki
 
 5. **Camera Handling**:
    - Added `cap.release()` to release the camera resource when the loop ends.
+
+
+**arm_mapping.py**
+
+
+This code defines a navigation system for a robot arm from Elephant Robotics. It includes functionalities for detecting obstacles using a camera, updating a visual map, planning a path to a goal position using the RRT (Rapidly-exploring Random Tree) algorithm, and moving the robot arm along the planned path.
+
+
+
+1. **Initialization (`__init__` method)**:
+   - Connects to the robot arm using its IP address.
+   - Initializes the robot's position and the map (a 500x500 pixel grid).
+   - Initializes an empty list for obstacle positions.
+
+2. **Obstacle Detection (`detect_obstacles` method)**:
+   - Captures a frame from the camera and converts it to grayscale.
+   - Applies a binary threshold to the grayscale image.
+   - Finds contours in the binary image.
+   - Extracts the positions of contours that are large enough to be considered obstacles.
+
+3. **Map Update (`update_map` method)**:
+   - Resets the map to an empty grid.
+   - Draws the robot's current position on the map as a green circle.
+   - Draws the detected obstacles on the map as red circles.
+
+4. **Path Planning (`plan_path` method)**:
+   - Uses the RRT algorithm to find a path from the robot's current position to the goal position.
+   - Defines a `Node` class to represent points in the tree with their positions and parent nodes.
+   - Repeatedly generates random points and extends the tree towards these points.
+   - Checks for collisions with obstacles and ensures the new points are collision-free.
+   - If a point close enough to the goal is found, it constructs and returns the path from start to goal by backtracking through the parent nodes.
+
+5. **Robot Movement (`move_robot` method)**:
+   - Calculates the direction and distance to the target position.
+   - Moves the robot in small steps towards the target position.
+   - Updates the robot's position and sends move commands to the robot arm.
+
+6. **Navigation Loop (`run_navigation` method)**:
+   - Continuously captures frames from the camera.
+   - Detects obstacles in the current frame.
+   - Updates the visual map.
+   - Plans a path to a predefined goal position (near the bottom-right corner of the map).
+   - Moves the robot along the planned path, step by step.
+   - Displays the map with the robot's position and obstacles.
+   - Stops the loop when the 'q' key is pressed.
+
+7. **Main Execution**:
+   - Initializes the navigation system with the robot's IP address.
+   - Starts the navigation loop.
+
+### Key Points of the Code:
+
+- **Obstacle Detection**: Uses computer vision techniques to identify obstacles in the robot's environment.
+- **Path Planning**: Implements the RRT algorithm to find a collision-free path to the goal.
+- **Robot Control**: Moves the robot towards the goal position using calculated steps.
+- **Real-time Visualization**: Continuously updates and displays the robot's map with its position and detected obstacles.
+
+
