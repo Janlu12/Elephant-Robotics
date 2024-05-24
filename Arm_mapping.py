@@ -76,7 +76,7 @@ class ElephantRobotArmNavigation:
         while True:
             ret, frame = cap.read()
             if not ret:
-                print("Nemožno načítať záber z kamery.")
+                print("CANNOT LOAD CAMERA SCREEN !!")
                 break
 
             self.detect_obstacles(frame)
