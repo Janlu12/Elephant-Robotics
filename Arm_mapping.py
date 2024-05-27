@@ -10,11 +10,13 @@ from scipy.spatial import KDTree
 mc = MyCobot("COM3", 115200) # Initiate MyCobot
 
 class ElephantRobotArmNavigation:
-    def __init__(mc, robot_ip):  #  def __init__(self, robot_ip): 
-        # self.robot = ElephantSDK(robot_ip)
-        mc.robot.connect()
-        mc.obstacle_positions = []
-        mc.target_position = None
+    def __init__(self, port, baudrate):  #  def __init__(self, robot_ip): 
+         self.robot = MyCobot(port, baudrate)
+         self.robot.connect()  #
+         self.robot_position = (250 , 250)
+         self.obstacle_positions = []
+         #mc.target_position = None
+         self.map = np.zeros((500, 500, 3), dtype=np.uint8)
 
     def detect_obstacles(mc, frame):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
