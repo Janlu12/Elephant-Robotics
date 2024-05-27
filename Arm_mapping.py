@@ -1,17 +1,22 @@
 import numpy as np
 import cv2
 import random
-from elephant_sdk import ElephantSDK
+from pymycobot.mycobot import MyCobot #correct library for MyCobot 
 from scipy.spatial import KDTree
 
-class ElephantRobotArmNavigation:
-    def __init__(self, robot_ip):
-        self.robot = ElephantSDK(robot_ip)
-        self.robot.connect()
-        self.obstacle_positions = []
-        self.target_position = None
 
-    def detect_obstacles(self, frame):
+
+
+mc = MyCobot("COM3", 115200) # Initiate MyCobot
+
+class ElephantRobotArmNavigation:
+    def __init__(mc, robot_ip):  #  def __init__(self, robot_ip): 
+        # self.robot = ElephantSDK(robot_ip)
+        mc.robot.connect()
+        mc.obstacle_positions = []
+        mc.target_position = None
+
+    def detect_obstacles(mc, frame):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
         contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
