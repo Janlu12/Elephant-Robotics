@@ -65,18 +65,14 @@ class ElephantRobotArmNavigation:
         
         return None
 
-    def move_robot(self, target_position):
-        direction = np.array(target_position) - np.array(self.robot_position)
-        distance = np.linalg.norm(direction)
-        step_size = 5
-        if distance > step_size:
-            direction = (direction / distance) * step_size
-            new_position = tuple(np.round(np.array(self.robot_position) + direction).astype(int))
-            self.robot_position = new_position
-            self.robot.move_to(new_position[0], new_position[1])
-        else:
-            self.robot_position = target_position
-            self.robot.move_to(target_position[0], target_position[1])
+def move_arm_to(self, target_position):
+        # Pohyb ramena k cieľovej pozícii
+        x, y = target_position
+        z = 100  # Predpokladaná výška zápästia
+        self.send_angles([x, y, z, 0, 0, 0], 80)  # Nastavenie pozície ramena
+
+        time.sleep(2.5) #Cakacia doba na zistenie ci rameno dosiahlo požadovanu poziciu 
+    
 
     def run_navigation(self):
         cap = cv2.VideoCapture(0)
@@ -104,6 +100,7 @@ class ElephantRobotArmNavigation:
         cv2.destroyAllWindows()
 
 # Inicializácia a spustenie navigácie
-robot_ip = "192.168.1.2"
-navigation_system = ElephantRobotArmNavigation(robot_ip=robot_ip)
+port = "COM3"  # Nahraďte skutočným portom pre váš MyCobot
+baudrate = 115200  # Predvolený baudrate pre MyCobot
+navigation_system = ElephantRobotArmNavigation(port, baudrate)
 navigation_system.run_navigation()
