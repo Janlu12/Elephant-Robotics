@@ -12,7 +12,9 @@ cap = cv2.VideoCapture(0)
 
 # Inicializácia robotického ramena
 # Pripojenie ramena k PC pomocou USB portu
-robot_arm = MyCobot('/dev/ttyUSB0', 115200)  # Príklad pripojenia cez USB port
+#robot_arm = MyCobot('/dev/ttyUSB0', 115200)  # Príklad pripojenia cez USB port OS Linux
+
+robot_arm = MyCobot("COM3", 115200) #Príklad pripojenia cez USB port OS Windows
 
 # Funkcia pre pohyb ramena
 def move_robot_to_sort(color):
